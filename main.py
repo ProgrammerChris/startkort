@@ -76,14 +76,15 @@ def auto_kort(antall):
 
         #Submit
 
-        print('Sender kort ' + str(x+1) + ' av ' + str(antall)) 
+        print('Sender kort ' + str(x+1) + ' av ' + str(antall) + '...') 
 
         response = browser.submit_selected()
         if response.status_code == 200:
             print('Startkort ' + str(x+1) + ' av ' + str(antall) + ' sendt!')
-            tid = random.randint(60, 600) # 60-600 sekunder pause mellom hvert kort
-            print('Neste kort sendes om ' + str(tid)/60 + ' minutter')
-        time.sleep(tid)
+            if (x+1) != antall:
+                tid = random.randint(60, 600) # 60-600 sekunder pause mellom hvert kort
+                print('Neste kort sendes om ' + str(tid/60) + ' minutter')
+                time.sleep(tid)
 
     personer_fil.close()
     kort_fil.close()
