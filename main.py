@@ -1,6 +1,7 @@
 import mechanicalsoup
 import random
 import urllib3
+import time
 
 def auto_kort(antall):
 
@@ -13,6 +14,7 @@ def auto_kort(antall):
 
     kort_liste = []
     personer = []
+    tid = 0
 
     for kort in kort_fil:
         kort_liste.append(kort)
@@ -73,11 +75,15 @@ def auto_kort(antall):
         browser['field_requirements_transocean[und]'] = '5'
 
         #Submit
-        #browser.launch_browser()
+
+        print('Sender kort ' + str(x+1) + ' av ' + str(antall)) 
 
         response = browser.submit_selected()
         if response.status_code == 200:
             print('Startkort ' + str(x+1) + ' av ' + str(antall) + ' sendt!')
+            tid = random.randint(60, 600) # 60-600 sekunder pause mellom hvert kort
+            print('Neste kort sendes om ' + str(tid)/60 + ' minutter')
+        time.sleep(tid)
 
     personer_fil.close()
     kort_fil.close()
