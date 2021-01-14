@@ -34,11 +34,6 @@ def auto_kort(antall):
         kort_text = random.choice(kort_liste)
         kort_liste.remove(kort_text)
 
-        # Skriver kort til fil så man kan se hva som er sendt.
-        sendte_kort = open("dagens.txt", "a")
-        sendte_kort.write(kort_text)
-        sendte_kort.close()
-
         browser = mechanicalsoup.StatefulBrowser()
         browser.open(url, verify=False)
         browser.select_form()
@@ -88,15 +83,21 @@ def auto_kort(antall):
 
         response = browser.submit_selected()
         if response.status_code == 200:
-            print('Startkort ' + str(x+1) + ' av ' + str(antall) + ' sendt!')
-            
-            if (x+1) != antall:
-              tid = random.randint(60, 600) # 60-600 sekunder pause mellom hvert kort
-              print('Neste kort sendes om ' + "%.2f" % (tid/60) + ' minutter')
-              time.sleep(tid)
+          
+          # Skriver kort til fil så man kan se hva som er sendt.
+          sendte_kort = open("dagens.txt", "a")
+          sendte_kort.write(kort_text)
+          sendte_kort.close()
+
+          print('Startkort ' + str(x+1) + ' av ' + str(antall) + ' sendt!')
+          
+          if (x+1) != antall:
+            tid = random.randint(60, 120) # 60-600 sekunder pause mellom hvert kort
+            print('Neste kort sendes om ' + "%.2f" % (tid/60) + ' minutter')
+            time.sleep(tid)
 
     personer_fil.close()
     kort_fil.close()
 
 if __name__ == '__main__':
-    auto_kort(5)
+    auto_kort(10)
