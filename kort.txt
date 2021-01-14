@@ -35,3 +35,4 @@ Gikk gjennom 5 key expectations under planlegging av jobb
 Sjekket guard og rails i området vi jobbet i , alt ok.
 Tok en sjekk i området for slips, trips, hazards. Fant alt ok.
 Sjekket belysningen i området vi jobbet i, alle lys fungerte
+Sjekket sjøsikringer i områdene mine
