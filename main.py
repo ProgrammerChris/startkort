@@ -2,6 +2,8 @@ import mechanicalsoup
 import random
 import urllib3
 import time
+import os
+
 
 def auto_kort(antall):
 
@@ -9,9 +11,11 @@ def auto_kort(antall):
 
     url = 'http://start.deepwater.com/'
 
+    os.remove("dagens.txt")
+
     personer_fil = open("personer.txt", "r", encoding='utf-8')
     kort_fil = open("kort.txt", "r", encoding='utf-8')
-
+    
     kort_liste = []
     personer = []
     tid = 0
@@ -25,11 +29,15 @@ def auto_kort(antall):
     random.shuffle(personer)
     random.shuffle(kort_liste)
 
-
     for x in range(antall):
         person = random.choice(personer)
         kort_text = random.choice(kort_liste)
         kort_liste.remove(kort_text)
+
+        # Skriver kort til fil så man kan se hva som er sendt.
+        sendte_kort = open("dagens.txt", "a")
+        sendte_kort.write(kort_text)
+        sendte_kort.close()
 
         browser = mechanicalsoup.StatefulBrowser()
         browser.open(url, verify=False)
@@ -54,7 +62,7 @@ def auto_kort(antall):
         browser['field_unit_transocean[und]'] = 'END - Transocean Endurance'
 
         #Name
-        browser['field_name[und][0][value]'] = person
+        browser['field_name[und][0][value]'] = '.'
 
         #First Name
         browser['field_first_name[und][0][value]'] = '.'
@@ -81,13 +89,14 @@ def auto_kort(antall):
         response = browser.submit_selected()
         if response.status_code == 200:
             print('Startkort ' + str(x+1) + ' av ' + str(antall) + ' sendt!')
+            
             if (x+1) != antall:
-                tid = random.randint(60, 600) # 60-600 sekunder pause mellom hvert kort
-                print('Neste kort sendes om ' + str(tid/60) + ' minutter')
-                time.sleep(tid)
+              tid = random.randint(60, 600) # 60-600 sekunder pause mellom hvert kort
+              print('Neste kort sendes om ' + "%.2f" % (tid/60) + ' minutter')
+              time.sleep(tid)
 
     personer_fil.close()
     kort_fil.close()
 
 if __name__ == '__main__':
-    auto_kort(21)
+    auto_kort(5)
