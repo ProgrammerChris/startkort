@@ -18,7 +18,7 @@ def auto_kort(antall):
     kort_liste = []
     tid = 0
 
-    print("Startkort presse starter!")
+    print("Startkort generator starter!")
 
     for kort in kort_fil:
         kort_liste.append(kort)
@@ -27,7 +27,6 @@ def auto_kort(antall):
 
     for x in range(antall):
         kort_text = random.choice(kort_liste)
-        kort_liste.remove(kort_text)
 
         browser = mechanicalsoup.StatefulBrowser()
         browser.open(url, verify=False)
@@ -40,10 +39,10 @@ def auto_kort(antall):
         browser['field_description_of_issue[und][0][value]'] = kort_text
 
         #Conversation - What was discussed? *
-        browser['field_description_of_recommended[und][0][value]'] = '.'
+        browser['field_description_of_recommended[und][0][value]'] = '*'
 
         #Reinforcement - What was agreed? *
-        browser['field_what_did_you_agree_[und][0][value]'] = '.'
+        browser['field_what_did_you_agree_[und][0][value]'] = '*'
 
         #Company
         browser['field_company_transocean[und]'] = 'Transocean'
@@ -82,6 +81,7 @@ def auto_kort(antall):
           # Skriver kort til fil så man kan se hva som er sendt.
           sendte_kort = open("brukte.txt", "a")
           sendte_kort.write(kort_text)
+          kort_liste.remove(kort_text)
           sendte_kort.close()
 
           print('Startkort ' + str(x+1) + ' av ' + str(antall) + ' sendt!')
@@ -97,7 +97,7 @@ def auto_kort(antall):
 
     ubrukte_kort.close()
     kort_fil.close()
-    print("Startkort presse stoppet!")
+    print("Startkort generator stoppet!")
 
 if __name__ == '__main__':
-    auto_kort(1)
+    auto_kort(15)
