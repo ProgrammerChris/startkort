@@ -100,4 +100,4 @@ def auto_kort(antall):
     print("Startkort generator stoppet!")
 
 if __name__ == '__main__':
-    auto_kort(15)
+    auto_kort(10)
