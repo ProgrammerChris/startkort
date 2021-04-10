@@ -13,7 +13,7 @@ def auto_kort(antall):
 
     os.remove("brukte.txt")
 
-    kort_fil = open("kort.txt", "r", encoding='utf-8')
+    kort_fil = open("ubrukte.txt", "r", encoding='utf-8')
     
     kort_liste = []
     tid = 0
@@ -22,6 +22,8 @@ def auto_kort(antall):
 
     for kort in kort_fil:
         kort_liste.append(kort)
+        
+    kort_fil.close()
 
     random.shuffle(kort_liste)
 
@@ -90,7 +92,9 @@ def auto_kort(antall):
             tid = random.randint(60, 600) # 60-600 sekunder pause mellom hvert kort
             print('Neste kort sendes om ' + "%.2f" % (tid/60) + ' minutter')
             time.sleep(tid)
-
+            
+    os.remove("ubrukte.txt")
+    
     ubrukte_kort = open("ubrukte.txt", "a")
     for kort in kort_liste:
       ubrukte_kort.write(kort)
